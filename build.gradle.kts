@@ -17,13 +17,13 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework:spring-core:5.3.26") // Для компиляции и выполнения
-    compileOnly("org.projectlombok:lombok:1.18.30")          // Только для компиляции
+    implementation("org.springframework:spring-core:5.3.26")
+    compileOnly("org.projectlombok:lombok:1.18.30")
     testImplementation(libs.org.junit.jupiter.junit.jupiter.engine)
     testImplementation(libs.org.junit.vintage.junit.vintage.engine)
     testImplementation(libs.org.assertj.assertj.core)
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0") // Для тестов
-    annotationProcessor("org.projectlombok:lombok:1.18.30")  // Для аннотаций
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 group = "ru.job4j"
