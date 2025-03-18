@@ -1,7 +1,13 @@
+/**
+ * My first program
+ */
 package ru.job4j;
-// My first program
+
+/**
+ * print output
+ */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world"); // print output
+        System.out.println("Hello world");
     }
 }
