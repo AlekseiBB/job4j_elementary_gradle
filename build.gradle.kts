@@ -3,11 +3,14 @@
  *
  * This project uses @Incubating APIs which are subject to change.
  */
+//import com.github.spotbugs.gradle.SpotBugsTask  // Импортируйте SpotBugsTask
 
 plugins {
     `java-library`
     `maven-publish`
+    id("com.github.spotbugs") version "6.0.26"
 }
+apply(plugin = "com.github.spotbugs")
 
 repositories {
     mavenLocal()
@@ -18,11 +21,13 @@ repositories {
 
 dependencies {
     implementation("org.springframework:spring-core:5.3.26")
+    implementation("org.apache.commons:commons-lang3:3.12.0") // new
     compileOnly("org.projectlombok:lombok:1.18.30")
     testImplementation(libs.org.junit.jupiter.junit.jupiter.engine)
     testImplementation(libs.org.junit.vintage.junit.vintage.engine)
     testImplementation(libs.org.assertj.assertj.core)
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("junit:junit:4.13.2") // new
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
@@ -54,4 +59,20 @@ tasks.register<Zip>("zipJavaDoc") {
     from("build/docs/javadoc") // Исходная папка для упаковки
     archiveFileName.set("javadoc.zip") // Имя создаваемого архива
     destinationDirectory.set(layout.buildDirectory.dir("archives")) // Директория, куда будет сохранен архив
+}
+
+tasks.register("spotbugsMain", com.github.spotbugs.gradle.SpotBugsTask::class) {  // Использование SpotBugsTask::class
+    classes.set(sourceSets["main"].output.classesDirs)
+    sourceDirs.set(sourceSets["main"].java.srcDirs)
+    auxClasspath.set(files(sourceSets["main"].runtimeClasspath) as Iterable<File>)  // Приведение типов
+    reports {
+        create("html") {
+            required.set(true)
+            outputLocation.set(layout.buildDirectory.file("reports/spotbugs/spotbugs.html"))
+        }
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.named("spotbugsMain"))
 }
